@@ -1,0 +1,1 @@
+AI notes generator from lecture audio recording

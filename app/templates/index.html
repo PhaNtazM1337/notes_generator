@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Upload Lecture Recording</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="audio" accept=".wav,.mp3" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
