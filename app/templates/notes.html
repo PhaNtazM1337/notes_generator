@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notesstyles.css') }}">
     <title>Generated Notes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <h1>Generated Lecture Notes</h1>
-    <div>
-        {{ notes|safe }}
-    </div>
-    <a href="/">Upload another file</a>
+    <p>View and download the generated files:</p>
+
+    <!-- PDF Viewer -->
+    <h2>PDF Viewer</h2>
+    <iframe src="{{ url_for('main.uploaded_file', filename=pdf_filename) }}" width="60%" height="500px">
+        Sorry, your browser does not support inline PDFs. Please download the PDF to view it: <a href="{{ url_for('main.uploaded_file', filename=pdf_filename) }}">Download PDF</a>
+    </iframe>
+
+    <!-- Download Links -->
+    <ul>
+        <li><a href="{{ url_for('main.uploaded_file', filename=tex_filename) }}">Download LaTeX file</a></li>
+        <li><a href="{{ url_for('main.uploaded_file', filename=pdf_filename) }}">Download PDF file</a></li>
+        <li><a href="https://www.overleaf.com/docs?snip_uri={{ url_for('main.uploaded_file', filename=tex_filename, _external=True) }}" target="_blank">Open in Overleaf</a></li>
+    </ul>
 </body>
 </html>
