@@ -3,24 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/notesstyles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/texme@1.2.2"></script>
     <title>Generated Notes</title>
 </head>
 <body>
-    <h1>Generated Lecture Notes</h1>
-    <p>View and download the generated files:</p>
-
-    <!-- PDF Viewer -->
-    <h2>PDF Viewer</h2>
-    <iframe src="{{ url_for('main.uploaded_file', filename=pdf_filename) }}" width="60%" height="500px">
-        Sorry, your browser does not support inline PDFs. Please download the PDF to view it: <a href="{{ url_for('main.uploaded_file', filename=pdf_filename) }}">Download PDF</a>
-    </iframe>
-
-    <!-- Download Links -->
-    <ul>
-        <li><a href="{{ url_for('main.uploaded_file', filename=tex_filename) }}">Download LaTeX file</a></li>
-        <li><a href="{{ url_for('main.uploaded_file', filename=pdf_filename) }}">Download PDF file</a></li>
-        <li><a href="https://www.overleaf.com/docs?snip_uri={{ url_for('main.uploaded_file', filename=tex_filename, _external=True) }}" target="_blank">Open in Overleaf</a></li>
-    </ul>
+    <textarea>{{ markdown_content }}</textarea>
 </body>
 </html>

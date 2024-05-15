@@ -39,9 +39,7 @@ def upload():
         result = model.transcribe(audio)
 
         # Use OpenAI to generate notes
-        system_prompt = """
-        You are a LaTeX expert tasked with formatting lecture notes into a clean, well-organized LaTeX template/document. The content includes mathematical formulas, definitions, and explanations that should be neatly presented using appropriate LaTeX environments like 'equation', 'itemize', and 'enumerate'. Ensure the text is error-free and formatted according to typical academic standards for a mathematical lecture. Here are the transcribed notes:
-        """
+        system_prompt = f"""Generate well-formatted and organized lecture notes from the following audio transcription. Correct any possible mistakes as transcription may be inaccurate. Make sure you include math equations and not just plain test. Directly output the results."""
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[
@@ -57,45 +55,8 @@ def upload():
         )
         notes = response.choices[0].message.content
 
-        def extract_latex_from_response(response_text):
-            # Define the start and end delimiters
-            start_delimiter = "```latex"
-            end_delimiter = "```"
-
-            # Find the start of the LaTeX block
-            start_index = response_text.find(start_delimiter)
-            if start_index == -1:
-                return "Error"
-
-            # Adjust the start_index to get the actual starting point of LaTeX code
-            start_index += len(start_delimiter)
-
-            # Find the end of the LaTeX block
-            end_index = response_text.find(end_delimiter, start_index)
-            if end_index == -1:
-                return "Error"
-
-            # Extract the LaTeX code
-            latex_code = response_text[start_index:end_index].strip()
-
-            return latex_code
-
-
-        res = extract_latex_from_response(notes)
-        if res != "Error":
-            notes = res
-        tex_filename = os.path.splitext(file.filename)[0] + ".tex"
-        tex_filepath = os.path.join('./uploads', tex_filename)
-        with open(tex_filepath, 'w', encoding='utf-8') as f:
-            f.write(notes)  # Assuming 'notes' is already in LaTeX format
-
-        # Compile LaTeX file to PDF
-        pdf_filename = os.path.splitext(file.filename)[0] + ".pdf"
-        pdf_filepath = os.path.join('./uploads', pdf_filename)
-        subprocess.run(['pdflatex', '-output-directory', './uploads', tex_filepath], check=True)
-
-        # Render template with links to download the PDF and LaTeX files
-        return render_template('notes.html', pdf_filename=pdf_filename, tex_filename=tex_filename)
+        # Render template with markdown
+        return render_template('notes.html', markdown_content=notes)
 
 @main.route('/uploads/<filename>')
 def uploaded_file(filename):
